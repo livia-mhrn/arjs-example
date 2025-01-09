@@ -1,9 +1,3 @@
-
-
-
-
-
-
 <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1c2407b26c61958baa93967b5412487cd94b290b/dist/aframe-master.min.js"></script>
 <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
 
@@ -28,7 +22,7 @@
   }
 </style>
 
-<body style="margin : 0px; overflow: hidden;">
+<body style="margin: 0px; overflow: hidden;">
   <!-- minimal loader shown until image descriptors are loaded -->
   <div class="arjs-loader">
     <div>Loading, please wait...</div>
@@ -37,32 +31,46 @@
     vr-mode-ui="enabled: false;"
     renderer="logarithmicDepthBuffer: true;"
     embedded
-    arjs="trackingMethod: best; sourceType: webcam;debugUIEnabled: false;"
+    arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
   >
-    <!-- we use cors proxy to avoid cross-origin problems -->
-
-    <!--
-      ⚠️⚠️⚠️
-      https://arjs-cors-proxy.herokuapp.com/ is now offline, Heroku has dismissed all his free plans from November 2022.
-      You need to host your own proxy and use it instead. The proxy is based on CORS Anywhere (see https://github.com/Rob--W/cors-anywhere).
-      ⚠️⚠️⚠️
-    -->
-
+    <!-- NFT Image Tracking -->
     <a-nft
       type="nft"
-      url="./arjs-example/trex/trex-image/trex"
+      url="./okegas.patt"  <!-- Replace with your custom image marker file -->
       smooth="true"
       smoothCount="10"
       smoothTolerance=".01"
       smoothThreshold="5"
     >
-      <a-entity
-      gltf-model="./trex/scene.gltf"
-      scale="5 5 5"
-        position="50 150 0"
-      >
-      </a-entity>
+      <!-- 3D Plane for YouTube video -->
+      <a-plane
+        id="video-plane"
+        position="0 0 0"
+        width="2"
+        height="1"
+        rotation="-90 0 0"
+        material="src: #video-texture"
+      ></a-plane>
     </a-nft>
+
+    <!-- Camera -->
     <a-entity camera></a-entity>
+
+    <!-- Hidden YouTube Video Container (Used as Texture) -->
+    <script>
+      // Create a video element for YouTube
+      const video = document.createElement('video');
+      video.src = "https://www.youtube.com/embed/jwYRwOj9RdA?autoplay=1&loop=1&playlist=jwYRwOj9RdA"; // YouTube video URL
+      video.crossOrigin = "anonymous"; // Avoid cross-origin issues
+      video.muted = true;  // Optionally mute the video
+      video.loop = true;
+      video.play();
+
+      // Create a texture from the video element
+      const videoTexture = new THREE.VideoTexture(video);
+
+      // Apply video texture to the plane
+      document.querySelector('#video-plane').setAttribute('material', 'src', videoTexture);
+    </script>
   </a-scene>
 </body>
