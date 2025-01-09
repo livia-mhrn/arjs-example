@@ -1,91 +1,12 @@
-<script src="https://cdn.jsdelivr.net/npm/aframe@1.6.0/dist/aframe-master.min.js"></script>
+<a-scene mindar-image="imageTargetSrc: ./okegas.mind; showStats: false; uiScanning: #example-scanning-overlay;" embedded color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+    <a-assets>
+    
+    <video id="video" autoplay loop="true" src="./okegas.webm"></video>
+</a-assets>
 
-<!-- Include the AR.js NFT script -->
-<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+  <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-<script>
-    window.onload = function() {
-        // Registering the 'videohandler' component
-        AFRAME.registerComponent('videohandler', {
-            init: function () {
-                var marker = this.el;  // The marker (NFT)
-
-                this.vid = document.querySelector("#vid");  // The video element
-
-                // Play the video when marker is found
-                marker.addEventListener('markerFound', function () {
-                    this.vid.play();
-                }.bind(this));
-
-                // Pause and reset the video when marker is lost
-                marker.addEventListener('markerLost', function() {
-                    this.vid.pause();
-                    this.vid.currentTime = 0;
-                }.bind(this));
-            }
-        });
-    };
-</script>
-
-<style>
-    .arjs-loader {
-        height: 100%;
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        background-color: rgba(0, 0, 0, 0.8);
-        z-index: 9999;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .arjs-loader div {
-        text-align: center;
-        font-size: 1.25em;
-        color: white;
-    }
-</style>
-
-<body style="margin: 0px; overflow: hidden;">
-    <!-- Loading message displayed until AR.js is ready -->
-    <div class="arjs-loader">
-        <div>Loading, please wait...</div>
-    </div>
-
-    <!-- A-Frame Scene with AR.js -->
-    <a-scene
-        vr-mode-ui="enabled: false;"
-        renderer="antialias: true; alpha: true; precision: medium;"
-        embedded
-        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;">
-        
-        <!-- Define video assets -->
-        <a-assets>
-            <video src="./okegas.webm"
-                preload="auto" id="vid" response-type="arraybuffer" loop
-                crossorigin webkit-playsinline autoplay playsinline>
-            </video>
-        </a-assets>
-
-        <!-- NFT tracking marker -->
-        <a-nft
-            videohandler
-            type="nft" url="./arjs-example/okegas" <!-- This is your NFT pattern file -->
-            smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
-            
-            <a-video
-                src="#vid"
-                position='0 0 -300'
-                rotation='-90 0 0'
-                width='300'
-                height='175'
-                >
-            </a-video>
-        </a-nft>
-
-        <!-- Camera element -->
-        <a-entity camera></a-entity>
-    </a-scene>
-</body>
+    <a-entity id="mytarget" mytarget mindar-image-target="targetIndex: 0">
+        <a-video src="#video" position="0 0 0" rotation="0 0 0" width="1.0" height="0.6"></a-video>
+    </a-entity>
+</a-scene>
