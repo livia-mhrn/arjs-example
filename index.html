@@ -34,36 +34,30 @@
     arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
   >
     <!-- Marker-based Tracking -->
-    <a-marker preset="custom" type="pattern" url="./okegas.patt">
-      <!-- Plane for YouTube video -->
+    <a-marker preset="custom" type="pattern" url="./arjs-example/okegas.patt">
+      <!-- Create a plane for iframe, slightly raised to avoid overlapping -->
       <a-plane
-        id="video-plane"
         position="0 0 0"
         width="2"
         height="1"
         rotation="-90 0 0"
-        material="src: #video-texture"
-      ></a-plane>
+        material="color: #FFFFFF"
+      >
+        <!-- Add iframe inside the plane for displaying YouTube video -->
+        <a-entity
+          geometry="primitive: plane; width: 2; height: 1;"
+          position="0 0 0"
+          material="shader: html; target: #video-iframe"
+        ></a-entity>
+      </a-plane>
     </a-marker>
 
     <!-- Camera -->
     <a-entity camera></a-entity>
 
-    <!-- Hidden YouTube Video Container (Used as Texture) -->
-    <script>
-      // Create a video element for YouTube
-      const video = document.createElement('video');
-      video.src = "https://www.youtube.com/embed/jwYRwOj9RdA?autoplay=1&loop=1&playlist=jwYRwOj9RdA"; // YouTube video URL
-      video.crossOrigin = "anonymous"; // Avoid cross-origin issues
-      video.muted = true;  // Optionally mute the video
-      video.loop = true;
-      video.play();
-
-      // Create a texture from the video element
-      const videoTexture = new THREE.VideoTexture(video);
-
-      // Apply video texture to the plane
-      document.querySelector('#video-plane').setAttribute('material', 'src', videoTexture);
-    </script>
+    <!-- Define an iframe that will render in the AR view -->
+    <a-assets>
+      <iframe id="video-iframe" src="https://www.youtube.com/embed/jwYRwOj9RdA?autoplay=1&loop=1&playlist=jwYRwOj9RdA" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </a-assets>
   </a-scene>
 </body>
