@@ -64,8 +64,8 @@
         <!-- Define video assets -->
         <a-assets>
             <video src="./okegas.webm"
-                preload="auto" id="vid" loop
-                crossorigin="anonymous" autoplay playsinline>
+                preload="auto" id="vid" response-type="arraybuffer" loop
+                crossorigin webkit-playsinline autoplay muted playsinline>
             </video>
         </a-assets>
 
@@ -75,14 +75,12 @@
             type="nft" url="./arjs-example/okegas" <!-- This is your NFT pattern file -->
             smooth="true" smoothCount="10" smoothTolerance="0.01" smoothThreshold="5">
             
-            <!-- Video display (Positioned to match the marker) -->
             <a-video
                 src="#vid"
-                position='50 150 -100'  <!-- Place video directly on top of marker -->
+                position='50 150 -100'
                 rotation='90 0 180'
-                width="300"           <!-- Adjust width to fit marker -->
-                height="175"       <!-- Adjust height to fit marker -->
-                autoplay="true"
+                width='300'
+                height='175'
                 >
             </a-video>
         </a-nft>
