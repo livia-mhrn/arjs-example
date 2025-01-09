@@ -44,6 +44,16 @@
           console.error("Error trying to play the video after target found:", error);
         });
       });
+
+     mytarget.addEventListener('targetLost', () => {
+        console.log("Target lost, stopping and resetting the video.");
+
+        // Completely reset the video by loading it again
+        video.load(); // Stops and resets the video to the beginning
+        
+        // Hide the video when target is lost
+        videoEntity.setAttribute('visible', 'false');
+      });
     </script>
   </body>
 </html>
