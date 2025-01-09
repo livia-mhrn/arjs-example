@@ -22,13 +22,28 @@
       // Debugging video autoplay behavior
       const video = document.querySelector('#video');
 
+      // Event listener to check if the video is ready to play
       video.oncanplay = () => {
         console.log("Video is ready to play");
+
+        // Try to play the video programmatically
+        video.play().catch((error) => {
+          console.error("Error trying to play the video:", error);
+        });
       };
 
       video.onerror = (e) => {
         console.log("Error loading video:", e);
       };
+
+      // Listen for target detection event
+      const mytarget = document.querySelector('#mytarget');
+      mytarget.addEventListener('targetFound', () => {
+        console.log("Target found, video should play.");
+        video.play().catch((error) => {
+          console.error("Error trying to play the video after target found:", error);
+        });
+      });
     </script>
   </body>
 </html>
