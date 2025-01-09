@@ -35,29 +35,32 @@
   >
     <!-- Marker-based Tracking -->
     <a-marker preset="custom" type="pattern" url="./arjs-example/okegas.patt">
-      <!-- Create a plane for iframe, slightly raised to avoid overlapping -->
+      <!-- Create a plane for the video -->
       <a-plane
+        id="video-plane"
         position="0 0 0"
         width="2"
         height="1"
         rotation="-90 0 0"
         material="color: #FFFFFF"
-      >
-        <!-- Add iframe inside the plane for displaying YouTube video -->
-        <a-entity
-          geometry="primitive: plane; width: 2; height: 1;"
-          position="0 0 0"
-          material="shader: html; target: #video-iframe"
-        ></a-entity>
-      </a-plane>
+      ></a-plane>
     </a-marker>
 
     <!-- Camera -->
     <a-entity camera></a-entity>
 
-    <!-- Define an iframe that will render in the AR view -->
+    <!-- Define local video as texture for the plane -->
     <a-assets>
-      <iframe id="video-iframe" src="https://www.youtube.com/embed/jwYRwOj9RdA?autoplay=1&loop=1&playlist=jwYRwOj9RdA" width="560" height="315" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <!-- Video texture definition -->
+      <video id="video-texture" src="./okegass.webm" autoplay loop="true" muted="true" crossOrigin="anonymous"></video>
     </a-assets>
+
+    <script>
+      // This script will get the video element and apply it as a texture to the plane.
+      var video = document.querySelector('#video-texture');
+      var videoTexture = new THREE.VideoTexture(video);
+      var plane = document.querySelector('#video-plane');
+      plane.setAttribute('material', 'src', videoTexture);
+    </script>
   </a-scene>
 </body>
