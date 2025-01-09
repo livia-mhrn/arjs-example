@@ -40,7 +40,7 @@
       const mytarget = document.querySelector('#mytarget');
       mytarget.addEventListener('targetFound', () => {
         console.log("Target found, video should play.");
-        video.play().catch((error) => {
+        video.load().catch((error) => {
           console.error("Error trying to play the video after target found:", error);
         });
       });
@@ -49,7 +49,7 @@
         console.log("Target lost, stopping and resetting the video.");
 
         // Completely reset the video by loading it again
-        video.load(); // Stops and resets the video to the beginning
+        video.pause(); // Stops and resets the video to the beginning
         
         // Hide the video when target is lost
         videoEntity.setAttribute('visible', 'false');
