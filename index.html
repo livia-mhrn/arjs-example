@@ -61,7 +61,7 @@
         console.log("Target lost, stopping and resetting the video.");
 
         // Completely reset the video by loading it again
-        video.load(); // Stops and resets the video to the beginning
+        video.pause(); // Stops and resets the video to the beginning
         
         // Hide the video when target is lost
         videoEntity.setAttribute('visible', 'false');
