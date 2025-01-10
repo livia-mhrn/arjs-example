@@ -54,9 +54,6 @@
         displayMessage("Video is ready to play!");
         
         // Play the video programmatically (this is required for autoplay to work)
-        video.play().catch((error) => {
-          displayMessage("Error trying to play the video: " + error);
-        });
       };
 
       // Event listener for errors loading the video
