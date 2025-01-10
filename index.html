@@ -7,26 +7,27 @@
   <body>
     <a-scene mindar-image="imageTargetSrc: ./okegas.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <video id="video" autoplay loop="true" src="./okegas.mp4"></video>
+        <!-- Use your video file -->
+        <video id="video" autoplay loop="true" muted src="./okegas.mp4" preload="auto"></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
       
       <!-- The video will appear when the target is detected -->
       <a-entity id="mytarget" mindar-image-target="targetIndex: 0">
-        <a-video src="#video" position="0 0 0" rotation="0 0 0" width="1.0" height="0.6"></a-video>
+        <a-video id="videoEntity" src="#video" position="0 0 0" rotation="0 0 0" width="1.0" height="0.6"></a-video>
       </a-entity>
     </a-scene>
 
     <script>
-      // Debugging video autoplay behavior
       const video = document.querySelector('#video');
-
+      const videoEntity = document.querySelector('#videoEntity');
+      
       // Event listener to check if the video is ready to play
       video.oncanplay = () => {
         console.log("Video is ready to play");
-
-        // Try to play the video programmatically
+        
+        // Play the video programmatically (this is required for autoplay to work)
         video.play().catch((error) => {
           console.error("Error trying to play the video:", error);
         });
@@ -38,12 +39,14 @@
 
       // Listen for target detection event
       const mytarget = document.querySelector('#mytarget');
+      
       mytarget.addEventListener('targetFound', () => {
         console.log("Target found, video should play.");
-        // Ensure the video is unmuted after the target is found
+
+        // Ensure the video is unmuted after the target is found (for iOS autoplay)
         video.muted = false;  // Unmute the video
 
-        // Set the video entity to visible
+        // Make sure the video is visible when the target is found
         videoEntity.setAttribute('visible', 'true');
 
         // Play the video from the beginning
@@ -53,11 +56,12 @@
         });
       });
 
-     mytarget.addEventListener('targetLost', () => {
+      // Listen for when the target is lost to stop and reset the video
+      mytarget.addEventListener('targetLost', () => {
         console.log("Target lost, stopping and resetting the video.");
 
         // Completely reset the video by loading it again
-        video.pause(); // Stops and resets the video to the beginning
+        video.load(); // Stops and resets the video to the beginning
         
         // Hide the video when target is lost
         videoEntity.setAttribute('visible', 'false');
