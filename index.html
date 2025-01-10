@@ -48,6 +48,8 @@
 
         // Make sure the video is visible when the target is found
         videoEntity.setAttribute('visible', 'true');
+        videoEntity.setAttribute('muted', 'false');
+
 
         // Play the video from the beginning
         video.load();  // Reset and stop the video (if it's not already at the beginning)
@@ -62,7 +64,7 @@
 
         // Completely reset the video by loading it again
         video.load(); // Stops and resets the video to the beginning
-        video.muted = true;
+        videoEntity.setAttribute('muted', 'true');
         
         // Hide the video when target is lost
         videoEntity.setAttribute('visible', 'false');
