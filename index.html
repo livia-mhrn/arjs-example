@@ -60,7 +60,6 @@
       mytarget.addEventListener('targetLost', () => {
         console.log("Target lost, stopping and resetting the video.");
 
-        video.muted = true;
         // Completely reset the video by loading it again
         video.load(); // Stops and resets the video to the beginning
         
