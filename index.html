@@ -40,7 +40,15 @@
       const mytarget = document.querySelector('#mytarget');
       mytarget.addEventListener('targetFound', () => {
         console.log("Target found, video should play.");
-        video.load().catch((error) => {
+        // Ensure the video is unmuted after the target is found
+        video.muted = false;  // Unmute the video
+
+        // Set the video entity to visible
+        videoEntity.setAttribute('visible', 'true');
+
+        // Play the video from the beginning
+        video.load();  // Reset and stop the video (if it's not already at the beginning)
+        video.play().catch((error) => {
           console.error("Error trying to play the video after target found:", error);
         });
       });
