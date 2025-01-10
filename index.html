@@ -60,8 +60,9 @@
       mytarget.addEventListener('targetLost', () => {
         console.log("Target lost, stopping and resetting the video.");
 
+        video.muted = true;
         // Completely reset the video by loading it again
-        video.stop(); // Stops and resets the video to the beginning
+        video.load(); // Stops and resets the video to the beginning
         
         // Hide the video when target is lost
         videoEntity.setAttribute('visible', 'false');
