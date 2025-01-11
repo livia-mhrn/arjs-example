@@ -37,9 +37,6 @@
         // Ensure the video is unmuted after the target is found (for iOS autoplay)
         video.muted = false;  // Unmute the video
 
-        // Make sure the video is visible when the target is found
-        videoEntity.setAttribute('visible', 'true');
-
         // Play the video from the beginning
         video.load();  // Reset and stop the video (if it's not already at the beginning)
         video.play().catch((error) => {
@@ -54,9 +51,6 @@
         // Completely reset the video by loading it again
         video.load(); // Stops and resets the video to the beginning
         
-        // Hide the video when target is lost
-        videoEntity.setAttribute('visible', 'false');
-
         // For iOS, use `load()` instead of `pause()` to reset the video to the beginning.
         video.currentTime = 0; // Set the video to the beginning to reset it
         video.pause(); // Pause the video if necessary
