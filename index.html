@@ -3,56 +3,96 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+    <style>
+      /* Basic styling to display the message on the page */
+      #message {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        padding: 10px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        font-size: 16px;
+        border-radius: 5px;
+        z-index: 1000;
+      }
+    </style>
   </head>
   <body>
     <a-scene mindar-image="imageTargetSrc: ./okegas.mind;" color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
       <a-assets>
-        <video id="video" autoplay loop="true" src="./okegas.webm"></video>
+        <!-- Use your video file -->
+        <video id="video" autoplay loop="true" muted src="./okegas.mp4" preload="auto" playsinline=""></video>
       </a-assets>
 
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
       
       <!-- The video will appear when the target is detected -->
       <a-entity id="mytarget" mindar-image-target="targetIndex: 0">
-        <a-video src="#video" position="0 0 0" rotation="0 0 0" width="1.0" height="0.6"></a-video>
+        <a-video id="videoEntity" src="#video" position="0 0 0" rotation="0 0 0" width="1.0" height="0.6"></a-video>
       </a-entity>
     </a-scene>
 
+    <!-- Container to display messages -->
+    <div id="message"></div>
+
     <script>
-      // Debugging video autoplay behavior
       const video = document.querySelector('#video');
+      const videoEntity = document.querySelector('#videoEntity');
+      const messageElement = document.querySelector('#message');  // Get the message container
+      
+      // Function to display messages on the page
+      function displayMessage(msg) {
+        messageElement.innerHTML = msg;  // Set the message text
+        setTimeout(() => {
+          messageElement.innerHTML = '';  // Clear the message after 5 seconds
+        }, 5000);
+      }
 
       // Event listener to check if the video is ready to play
       video.oncanplay = () => {
-        console.log("Video is ready to play");
-
-        // Try to play the video programmatically
-        video.play().catch((error) => {
-          console.error("Error trying to play the video:", error);
-        });
+        displayMessage("Video is ready to play!");
+        
+        // Play the video programmatically (this is required for autoplay to work)
       };
 
+      // Event listener for errors loading the video
       video.onerror = (e) => {
-        console.log("Error loading video:", e);
+        displayMessage("Error loading video: " + e.message);
       };
 
       // Listen for target detection event
       const mytarget = document.querySelector('#mytarget');
+      
       mytarget.addEventListener('targetFound', () => {
-        console.log("Target found, video should play.");
-        video.load().catch((error) => {
-          console.error("Error trying to play the video after target found:", error);
+        displayMessage("Target found, video should play.");
+
+        // Ensure the video is unmuted after the target is found (for iOS autoplay)
+        video.muted = false;  // Unmute the video
+
+        // Make sure the video is visible when the target is found
+        videoEntity.setAttribute('visible', 'true');
+
+        // Play the video from the beginning
+        video.load();  // Reset and stop the video (if it's not already at the beginning)
+        video.play().catch((error) => {
+          displayMessage("Error trying to play the video after target found: " + error);
         });
       });
 
-     mytarget.addEventListener('targetLost', () => {
-        console.log("Target lost, stopping and resetting the video.");
+      // Listen for when the target is lost to stop and reset the video
+      mytarget.addEventListener('targetLost', () => {
+        displayMessage("Target lost, stopping and resetting the video.");
 
         // Completely reset the video by loading it again
-        video.pause(); // Stops and resets the video to the beginning
+        video.load(); // Stops and resets the video to the beginning
         
         // Hide the video when target is lost
         videoEntity.setAttribute('visible', 'false');
+
+        // For iOS, use `load()` instead of `pause()` to reset the video to the beginning.
+        video.currentTime = 0; // Set the video to the beginning to reset it
+        video.pause(); // Pause the video if necessary
       });
     </script>
   </body>
