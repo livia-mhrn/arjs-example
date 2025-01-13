@@ -54,9 +54,10 @@
           displayMessage(`Target ${index} found, preparing video.`);
 
           video.setAttribute('visible', 'true');
-          video.muted = false;
           
           const videoElement = document.querySelector(`#video${index + 1}`);
+          videoElement.muted = false;
+
           // Ensure the video is ready to play before calling play()
           videoElement.oncanplay = () => {
             videoElement.play().catch((error) => {
@@ -77,9 +78,9 @@
           displayMessage(`Target ${index} lost, stopping video.`);
 
           video.setAttribute('visible', 'false');
-          video.muted = true;
           
           const videoElement = document.querySelector(`#video${index + 1}`);
+          videoElement.muted = true;
           // Pause and reset the video
           videoElement.pause();
           videoElement.currentTime = 0;  // Reset video
