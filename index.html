@@ -52,10 +52,12 @@
         // Listen for when the target is found
         targetEntity.addEventListener('targetFound', () => {
           displayMessage(`Target ${index} found, preparing video.`);
-          video.setAttribute('visible', 'true');
+          const videoElement = document.querySelector(`#video${index + 1}`);
+
+          videoElement.setAttribute('visible', 'true');
+          videoElement.muted = false;
           
           // Ensure the video is ready to play before calling play()
-          const videoElement = document.querySelector(`#video${index + 1}`);
           videoElement.oncanplay = () => {
             videoElement.play().catch((error) => {
               displayMessage(`Error playing video for target ${index}: ${error}`);
@@ -73,10 +75,11 @@
         // Listen for when the target is lost
         targetEntity.addEventListener('targetLost', () => {
           displayMessage(`Target ${index} lost, stopping video.`);
-          video.setAttribute('visible', 'false');
+          const videoElement = document.querySelector(`#video${index + 1}`);
+
+          videoElement.setAttribute('visible', 'false');
           
           // Pause and reset the video
-          const videoElement = document.querySelector(`#video${index + 1}`);
           videoElement.pause();
           videoElement.currentTime = 0;  // Reset video
         });
